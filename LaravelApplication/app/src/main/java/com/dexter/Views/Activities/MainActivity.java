@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
         holder.et_username = (EditText)findViewById(R.id.et_username);
         holder.et_password = (EditText)findViewById(R.id.et_password);
+        holder.et_email = (EditText)findViewById(R.id.et_email);
 
         holder.but_register = (Button)findViewById(R.id.but_register);
         holder.but_register.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
 
                 try {
                     jsonObj.put("username", holder.et_username.getText().toString());
+                    jsonObj.put("email", holder.et_email.getText().toString());
                     jsonObj.put("password", holder.et_password.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -79,6 +81,7 @@ class Holder_Main
 {
     EditText et_username;
     EditText et_password;
+    EditText et_email;
 
     Button but_register;
 }

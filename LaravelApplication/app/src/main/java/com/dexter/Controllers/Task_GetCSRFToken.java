@@ -44,8 +44,7 @@ public class Task_GetCSRFToken extends AsyncTask <Void, Void, Boolean> {
 
             is = urlHttpConnect.getInputStream();
 
-            InputStream in = new BufferedInputStream(is);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             StringBuilder builder = new StringBuilder();
             String line;
@@ -56,9 +55,10 @@ public class Task_GetCSRFToken extends AsyncTask <Void, Void, Boolean> {
 
             tokenStr = builder.toString();
 
-            if (getCsrfToken())
+            if (getCsrfToken()) {
+                urlHttpConnect.disconnect();
                 return true;
-            else
+            }else
                 return false;
         } catch (MalformedURLException e) {
             e.printStackTrace();

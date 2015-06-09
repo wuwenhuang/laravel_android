@@ -19,11 +19,26 @@
         android:layout_alignBaseline="@+id/tv_username"/>
 
     <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_email"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/et_username"/>
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_email"
+        android:layout_alignBaseline="@+id/tv_email"/>
+
+    <TextView
         android:id="@+id/tv_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et_username"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_email"
+        android:layout_marginTop="30dp"
         android:text="@string/text_password"/>
 
     <EditText

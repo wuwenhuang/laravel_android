@@ -5,10 +5,18 @@ import android.os.AsyncTask;
 import com.dexter.Constants.Constant_URL;
 import com.dexter.Models.Model_Application;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -23,6 +31,8 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
     private HttpURLConnection urlConnect;
     private String str_result;
     private StringBuilder strBuilder;
+    private InputStream is;
+    private String outputStr;
 
     public Task_Register(JSONObject jsonObj)
     {
@@ -32,60 +42,45 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            URL url = new URL(Constant_URL.URL + Constant_URL.Register);
+            URL url = new URL("http://dexter-laravelframe.rhcloud.com/register");
 
             urlConnect = (HttpURLConnection) url.openConnection();
-
+            urlConnect.setRequestMethod("POST");
             urlConnect.setDoOutput(true);
             urlConnect.setDoInput(true);
-            urlConnect.setInstanceFollowRedirects(true);
-            urlConnect.setRequestMethod("POST");
             urlConnect.setRequestProperty("Content-Type", "application/json");
-            urlConnect.setRequestProperty("x-csrf-token", Model_Application.token_csrf);
-            urlConnect.setUseCaches(false);
+//            urlConnect.setRequestProperty("x-csrf-token", Model_Application.token_csrf);
             urlConnect.connect();
 
             OutputStreamWriter outWrite = new OutputStreamWriter(urlConnect.getOutputStream());
             outWrite.write(sendJsonObj.toString());
-            outWrite.flush();
-            outWrite.close();
 
-            int result = urlConnect.getResponseCode();
-            if(result == HttpURLConnection.HTTP_OK)
+            int code = urlConnect.getResponseCode();
+
+            if (code == 200)
             {
-                buffRead();
-                urlConnect.disconnect();
-                return true;
+                is = urlConnect.getInputStream();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+                StringBuilder builder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+                reader.close();
+
+                outputStr = builder.toString();
             }
-            else
-            {
-                urlConnect.disconnect();
-                return false;
-            }
+
+            urlConnect.disconnect();
+
+            return true;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
     }
-
-    private void buffRead() {
-        str_result = null;
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    urlConnect.getInputStream(),"utf-8"));
-            while ((str_result = br.readLine()) != null) {
-                strBuilder.append(str_result + "\n");
-            }
-            br.close();
-
-            str_result = strBuilder.toString();
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
 
 }
