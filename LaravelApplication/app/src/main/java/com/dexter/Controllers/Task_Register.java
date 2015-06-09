@@ -48,12 +48,15 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
             urlConnect.setRequestMethod("POST");
             urlConnect.setDoOutput(true);
             urlConnect.setDoInput(true);
+            urlConnect.setConnectTimeout(10000);
             urlConnect.setRequestProperty("Content-Type", "application/json");
 //            urlConnect.setRequestProperty("x-csrf-token", Model_Application.token_csrf);
             urlConnect.connect();
 
             OutputStreamWriter outWrite = new OutputStreamWriter(urlConnect.getOutputStream());
             outWrite.write(sendJsonObj.toString());
+            outWrite.flush();
+            outWrite.close();
 
             int code = urlConnect.getResponseCode();
 
