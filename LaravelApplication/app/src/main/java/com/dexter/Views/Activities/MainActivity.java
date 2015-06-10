@@ -1,5 +1,7 @@
 package com.dexter.Views.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private Holder_Main holder;
 
@@ -31,25 +33,20 @@ public class MainActivity extends ActionBarActivity {
     {
         holder = new Holder_Main();
 
-        holder.et_username = (EditText)findViewById(R.id.et_username);
-        holder.et_password = (EditText)findViewById(R.id.et_password);
-        holder.et_email = (EditText)findViewById(R.id.et_email);
-
-        holder.but_register = (Button)findViewById(R.id.but_register);
+        holder.but_register = (Button) findViewById(R.id.but_register);
         holder.but_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObj = new JSONObject();
+                Intent act_register = new Intent(getBaseContext(), Activity_Register.class);
+                startActivity(act_register);
+            }
+        });
 
-                try {
-                    jsonObj.put("username", holder.et_username.getText().toString());
-                    jsonObj.put("email", holder.et_email.getText().toString());
-                    jsonObj.put("password", holder.et_password.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        holder.but_login = (Button) findViewById(R.id.but_login);
+        holder.but_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                new Task_Register(jsonObj).execute();
             }
         });
     }
@@ -79,9 +76,6 @@ public class MainActivity extends ActionBarActivity {
 
 class Holder_Main
 {
-    EditText et_username;
-    EditText et_password;
-    EditText et_email;
-
     Button but_register;
+    Button but_login;
 }
