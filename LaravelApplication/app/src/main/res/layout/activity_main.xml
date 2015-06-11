@@ -10,6 +10,7 @@
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:src="@mipmap/background_main"/>
 
     <LinearLayout
@@ -17,22 +18,18 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/iv_background"
-        android:layout_marginTop="20dp"
-        android:showDividers="end"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/but_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:text="@string/text_register"/>
 
         <Button
             android:id="@+id/but_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:text="@string/text_login"/>
 
     </LinearLayout>

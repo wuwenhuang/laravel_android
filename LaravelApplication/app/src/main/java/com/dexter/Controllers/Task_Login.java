@@ -4,18 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.dexter.Constants.Constant_URL;
-import com.dexter.Models.Model_Application;
-import com.dexter.Receivers.Receiver_Register;
+import com.dexter.Constants.Constant_String;
+import com.dexter.Receivers.Receiver_Login;
 import com.dexter.Utils.ResourceManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -26,31 +18,31 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
- * Created by dexter.n on 08/06/2015.
+ * Created by dexter.n on 11/06/2015.
  */
-public class Task_Register extends AsyncTask<Void, Void, Boolean> {
+public class Task_Login extends AsyncTask <Void, Void, Boolean> {
 
-    private final JSONObject sendJsonObj;
     private final Context mContext;
+    private final JSONObject mJsonObj;
     private HttpURLConnection urlConnect;
-    private String str_result;
-    private StringBuilder strBuilder;
     private InputStream is;
     private String outputStr;
 
-    public Task_Register(Context context, JSONObject jsonObj)
-    {
+    public Task_Login(Context context, JSONObject jsonObject) {
         mContext = context;
-        sendJsonObj = jsonObj;
+        mJsonObj = jsonObject;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
+        URL url = null;
         try {
-            URL url = new URL("http://dexter-laravelframe.rhcloud.com/register");
+            url = new URL("http://dexter-laravelframe.rhcloud.com/login");
 
             urlConnect = (HttpURLConnection) url.openConnection();
             urlConnect.setRequestMethod("POST");
@@ -62,14 +54,13 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
             urlConnect.connect();
 
             OutputStreamWriter outWrite = new OutputStreamWriter(urlConnect.getOutputStream());
-            outWrite.write(sendJsonObj.toString());
+            outWrite.write(mJsonObj.toString());
             outWrite.flush();
             outWrite.close();
 
             int code = urlConnect.getResponseCode();
 
-            if (code == 200)
-            {
+            if (code == 200) {
                 is = urlConnect.getInputStream();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -87,23 +78,31 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
             }
 
             urlConnect.disconnect();
-
             return true;
 
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
     private void getData() {
-        JSONObject jsonObj = null;
         try {
-            jsonObj = (JSONObject) new JSONTokener(outputStr).nextValue();
+            JSONObject responseJson = (JSONObject) new JSONTokener(outputStr).nextValue();
 
-            if (jsonObj.has("id")) {
-                ResourceManager.UserProfile.id = jsonObj.getInt("id");
-            }
+            if (responseJson.has("id")) ResourceManager.UserProfile.id = responseJson.getInt("id");
+            if (responseJson.has("name"))
+                ResourceManager.UserProfile.name = responseJson.getString("name");
+            if (responseJson.has("email"))
+                ResourceManager.UserProfile.email = responseJson.getString("email");
+            if (responseJson.has("remember_token"))
+                ResourceManager.UserProfile.remember_token = responseJson.getString("remember_token");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -111,10 +110,11 @@ public class Task_Register extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        Intent broadcastRegister = new Intent();
-        broadcastRegister.addCategory(Intent.CATEGORY_DEFAULT);
-        broadcastRegister.setAction(Receiver_Register.ACTION_REGISTER);
+        Intent broadcastLogin = new Intent();
+        broadcastLogin.setAction(Receiver_Login.ACTION_LOGIN);
+        broadcastLogin.addCategory(Intent.CATEGORY_DEFAULT);
+        broadcastLogin.putExtra(Constant_String.IS_LOGIN, aBoolean);
 
-        mContext.sendBroadcast(broadcastRegister);
+        mContext.sendBroadcast(broadcastLogin);
     }
 }

@@ -1,12 +1,20 @@
 package com.dexter.Views.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.dexter.Controllers.Task_Register;
+import com.dexter.Receivers.Receiver_Register;
+import com.dexter.Utils.ResourceManager;
 import com.dexter.laravelapplication.R;
 
 import org.json.JSONException;
@@ -15,19 +23,27 @@ import org.json.JSONObject;
 /**
  * Created by dexter.n on 10/06/2015.
  */
-public class Activity_Register extends Activity{
+public class Activity_Register extends BaseActivity{
     private Holder_Register holder;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        initBroadcast();
         init();
     }
 
-    private void init()
-    {
+    private void initBroadcast() {
+        IntentFilter registerFilter = new IntentFilter(Receiver_Register.ACTION_REGISTER);
+        registerFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        Activity_Register.this.registerReceiver(mBroadcastRegister, registerFilter);
+    }
+
+    @Override
+    public void init() {
         holder = new Holder_Register();
 
         holder.et_username = (EditText)findViewById(R.id.et_username);
@@ -47,11 +63,33 @@ public class Activity_Register extends Activity{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                new Task_Register(jsonObj).execute();
+                createDialog();
+                new Task_Register(getApplicationContext(), jsonObj).execute();
             }
+
+
         });
     }
+
+    private void createDialog()
+    {
+        dialog = new ProgressDialog(getBaseContext());
+        dialog.setMessage("Registering..");
+        dialog.show();
+    }
+
+    private Receiver_Register mBroadcastRegister = new Receiver_Register()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("ID", ResourceManager.UserProfile.id + "");
+
+            if (dialog != null && dialog.isShowing())
+                dialog.dismiss();
+
+            finish();
+        }
+    };
 }
 
 class Holder_Register

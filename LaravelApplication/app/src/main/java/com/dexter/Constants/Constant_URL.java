@@ -7,5 +7,6 @@ public class Constant_URL {
 
     public static String URL = "http://dexter-laravelframe.rhcloud.com";
     public static String Register = "/register";
+    public static String Login = "/login";
     public static String Get_CSRFToken = "/get_csrftoken";
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.dexter.Application.LaravelApplication;
 import com.dexter.Controllers.Task_Register;
 import com.dexter.laravelapplication.R;
 
@@ -17,9 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends Activity {
+public class Activity_Main extends BaseActivity {
 
     private Holder_Main holder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +31,17 @@ public class MainActivity extends Activity {
         init();
     }
 
-    private void init()
-    {
+    @Override
+    public void init() {
         holder = new Holder_Main();
 
         holder.but_register = (Button) findViewById(R.id.but_register);
         holder.but_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent act_register = new Intent(getBaseContext(), Activity_Register.class);
-                startActivity(act_register);
+                Intent registerIntent = new Intent(getBaseContext(), Activity_Register.class);
+                startActivity(registerIntent);
+                LaravelApplication.instance.addActivity(instance);
             }
         });
 
@@ -46,7 +49,9 @@ public class MainActivity extends Activity {
         holder.but_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent loginIntent = new Intent(getBaseContext(), Activity_Login.class);
+                startActivity(loginIntent);
+                LaravelApplication.instance.addActivity(instance);
             }
         });
     }
