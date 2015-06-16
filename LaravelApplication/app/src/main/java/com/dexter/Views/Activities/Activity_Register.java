@@ -43,7 +43,7 @@ public class Activity_Register extends BaseActivity{
     }
 
     @Override
-    public void init() {
+    protected void init() {
         holder = new Holder_Register();
 
         holder.et_username = (EditText)findViewById(R.id.et_username);

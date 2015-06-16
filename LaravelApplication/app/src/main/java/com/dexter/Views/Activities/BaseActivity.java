@@ -17,5 +17,5 @@ public abstract class BaseActivity extends Activity {
         instance = this;
     }
 
-    public abstract void init();
+    protected abstract void init();
 }

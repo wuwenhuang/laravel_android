@@ -32,7 +32,7 @@ public class Activity_Main extends BaseActivity {
     }
 
     @Override
-    public void init() {
+    protected void init() {
         holder = new Holder_Main();
 
         holder.but_register = (Button) findViewById(R.id.but_register);

@@ -54,9 +54,8 @@ public class Activity_Login extends BaseActivity{
         Activity_Login.this.registerReceiver(mBroadcastReceiverLogin, loginFilter);
     }
 
-
     @Override
-    public void init() {
+    protected void init() {
         holder = new Holder_Login();
 
         holder.et_email = (EditText)findViewById(R.id.et_email);
