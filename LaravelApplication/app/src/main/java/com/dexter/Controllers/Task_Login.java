@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.dexter.Constants.Constant_String;
+import com.dexter.Models.Model_User;
 import com.dexter.Receivers.Receiver_Login;
 import com.dexter.Utils.ResourceManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,20 +95,22 @@ public class Task_Login extends AsyncTask <Void, Void, Boolean> {
     }
 
     private void getData() {
-        try {
-            JSONObject responseJson = (JSONObject) new JSONTokener(outputStr).nextValue();
+//        try {
+//            JSONObject responseJson = (JSONObject) new JSONTokener(outputStr).nextValue();
+            Gson gson = new GsonBuilder().create();
+            ResourceManager.UserProfile = gson.fromJson(outputStr, Model_User.class);
 
-            if (responseJson.has("id")) ResourceManager.UserProfile.id = responseJson.getInt("id");
-            if (responseJson.has("name"))
-                ResourceManager.UserProfile.name = responseJson.getString("name");
-            if (responseJson.has("email"))
-                ResourceManager.UserProfile.email = responseJson.getString("email");
-            if (responseJson.has("remember_token"))
-                ResourceManager.UserProfile.remember_token = responseJson.getString("remember_token");
+//            if (responseJson.has("id")) ResourceManager.UserProfile.id = responseJson.getInt("id");
+//            if (responseJson.has("name"))
+//                ResourceManager.UserProfile.name = responseJson.getString("name");
+//            if (responseJson.has("email"))
+//                ResourceManager.UserProfile.email = responseJson.getString("email");
+//            if (responseJson.has("remember_token"))
+//                ResourceManager.UserProfile.remember_token = responseJson.getString("remember_token");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
