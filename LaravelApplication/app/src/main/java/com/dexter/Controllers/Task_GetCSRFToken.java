@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.dexter.Constants.Constant_URL;
 import com.dexter.Models.Model_Application;
+import com.dexter.Utils.ResourceManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -76,7 +77,7 @@ public class Task_GetCSRFToken extends AsyncTask <Void, Void, Boolean> {
 
             if (tokenJson.has("csrf_token"))
             {
-                Model_Application.token_csrf = tokenJson.getString("csrf_token");
+                ResourceManager.Application.csrf_token = tokenJson.getString("csrf_token");
             }
         } catch (JSONException e) {
             return false;

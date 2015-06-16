@@ -9,13 +9,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.dexter.Constants.Constant_String;
 import com.dexter.Controllers.Task_Login;
+import com.dexter.Models.Model_User;
 import com.dexter.Receivers.Receiver_Login;
+import com.dexter.Utils.ResourceManager;
 import com.dexter.laravelapplication.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dexter.n on 11/06/2015.
@@ -60,8 +73,8 @@ public class Activity_Login extends BaseActivity{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                new Task_Login(getApplicationContext(), jsonObj).execute();
+                volleyCall(jsonObj);
+//                new Task_Login(getApplicationContext(), jsonObj).execute();
             }
         });
 
@@ -72,6 +85,34 @@ public class Activity_Login extends BaseActivity{
 
             }
         });
+    }
+
+    private void volleyCall(final JSONObject jsonObj) {
+        JsonObjectRequest jsonObjRequest = new JsonObjectRequest(
+                Request.Method.POST, "http://dexter-laravelframe.rhcloud.com/login", jsonObj,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        Gson gson = new GsonBuilder().create();
+                        String outputString = jsonObject.toString();
+                        ResourceManager.UserProfile = gson.fromJson(outputString, Model_User.class);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        volleyError.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(getBaseContext()).add(jsonObjRequest);
     }
 
     private Receiver_Login mBroadcastReceiverLogin = new Receiver_Login()

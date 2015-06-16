@@ -1,5 +1,6 @@
 package com.dexter.Utils;
 
+import com.dexter.Models.Model_Application;
 import com.dexter.Models.Model_User;
 
 /**
@@ -7,4 +8,5 @@ import com.dexter.Models.Model_User;
  */
 public class ResourceManager {
     public static Model_User UserProfile = new Model_User();
+    public static Model_Application Application = new Model_Application();
 }
