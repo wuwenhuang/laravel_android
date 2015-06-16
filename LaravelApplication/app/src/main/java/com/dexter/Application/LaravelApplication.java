@@ -55,7 +55,7 @@ public class LaravelApplication extends Application {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        volleyError.printStackTrace();
                     }
                 }
         ) {
