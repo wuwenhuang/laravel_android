@@ -26,7 +26,6 @@
         <activity android:name="com.dexter.Views.Activities.Activity_Register" />
         <activity android:name="com.dexter.Views.Activities.Activity_Login" />
 
-
     </application>
 
 </manifest>
