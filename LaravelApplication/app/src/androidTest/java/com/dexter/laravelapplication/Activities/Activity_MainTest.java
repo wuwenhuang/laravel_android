@@ -42,42 +42,31 @@ public class Activity_MainTest extends ActivityInstrumentationTestCase2<Activity
         super.tearDown();
     }
 
-    public void testOnCreate() throws Exception {
-
-    }
-
     @SmallTest
-    public void testInit() throws Exception {
+    public void testPreConditions() throws Exception {
         assertNotNull(mActivity);
         assertNotNull(mInstrumentation);
         assertNotNull(but_register);
         assertNotNull(but_login);
+
     }
 
     @SmallTest
     public void testFollowLink() throws Exception {
-        Instrumentation.ActivityMonitor monitor = mInstrumentation.addMonitor(Activity_Login.class.getName(), null, false);
+        Instrumentation.ActivityMonitor monitor = mInstrumentation.addMonitor(Activity_LoginTest.class.getName(), null, false);
         assertEquals(0, monitor.getHits());
         TouchUtils.clickView(this, but_login);
         monitor.waitForActivityWithTimeout(5000);
+        assertEquals(1, monitor.getHits());
 
-        monitor = mInstrumentation.addMonitor(Activity_Register.class.getName(), null, false);
+        monitor = mInstrumentation.addMonitor(Activity_RegisterTest.class.getName(), null, false);
+        assertEquals(0, monitor.getHits());
         TouchUtils.clickView(this, but_register);
         monitor.waitForActivityWithTimeout(5000);
-        assertEquals(0, monitor.getHits());
+        assertEquals(1, monitor.getHits());
 
         mInstrumentation.removeMonitor(monitor);
-
-
     }
 
 
-
-    public void testOnCreateOptionsMenu() throws Exception {
-
-    }
-
-    public void testOnOptionsItemSelected() throws Exception {
-
-    }
 }

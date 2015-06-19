@@ -1,8 +1,8 @@
 package com.dexter.laravelapplication;
 
-import android.app.Application;
+import android.os.Handler;
+import android.os.Message;
 import android.test.ApplicationTestCase;
-import android.test.InstrumentationTestCase;
 
 import com.dexter.Application.LaravelApplication;
 
@@ -12,7 +12,6 @@ import com.dexter.Application.LaravelApplication;
 public class ApplicationTest extends ApplicationTestCase<LaravelApplication> {
     public ApplicationTest() {
         super(LaravelApplication.class);
-
     }
 
     @Override

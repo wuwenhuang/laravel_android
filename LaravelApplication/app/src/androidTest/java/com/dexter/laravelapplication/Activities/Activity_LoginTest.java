@@ -2,6 +2,9 @@ package com.dexter.laravelapplication.Activities;
 
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
+import android.test.suitebuilder.annotation.SmallTest;
+import android.text.method.Touch;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -17,9 +20,9 @@ public class Activity_LoginTest extends ActivityInstrumentationTestCase2<Activit
 
     private Activity_Login mActivity;
     private Instrumentation mInstrumentation;
-    private EditText et_username;
+    private EditText et_email;
     private EditText et_password;
-    private Button but_register;
+    private Button but_login;
 
     public Activity_LoginTest() {
         super(Activity_Login.class);
@@ -31,20 +34,28 @@ public class Activity_LoginTest extends ActivityInstrumentationTestCase2<Activit
         mActivity = getActivity();
         mInstrumentation = getInstrumentation();
 
-        et_username = (EditText)mActivity.findViewById(R.id.et_username);
+        et_email = (EditText)mActivity.findViewById(R.id.et_email);
         et_password = (EditText) mActivity.findViewById(R.id.et_password);
-        but_register = (Button)mActivity.findViewById(R.id.but_register);
+        but_login = (Button)mActivity.findViewById(R.id.but_login);
+    }
+
+    @SmallTest
+    public void testPreConditions() throws Exception {
+        assertNotNull(et_email);
+        assertNotNull(et_password);
+        assertNotNull(but_login);
     }
 
     public void tearDown() throws Exception {
 
     }
 
-    public void testOnCreate() throws Exception {
+    @SmallTest
+    public void testFollowLink() throws Exception {
+        et_email.setText("wuwenhuang88@qq.com");
+        et_password.setText("jianyang8");
 
+        TouchUtils.clickView(this, but_login);
     }
 
-    public void testInit() throws Exception {
-
-    }
 }

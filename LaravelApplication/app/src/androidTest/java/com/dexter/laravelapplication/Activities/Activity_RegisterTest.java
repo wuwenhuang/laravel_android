@@ -21,6 +21,7 @@ public class Activity_RegisterTest extends ActivityInstrumentationTestCase2<Acti
     private EditText et_username;
     private Button but_register;
     private EditText et_password;
+    private EditText et_email;
 
     public Activity_RegisterTest() {
         super(Activity_Register.class);
@@ -32,24 +33,22 @@ public class Activity_RegisterTest extends ActivityInstrumentationTestCase2<Acti
         mActivity = getActivity();
         mInstrumentation = getInstrumentation();
 
+        et_username = (EditText)getActivity().findViewById(R.id.et_username);
+        et_password = (EditText)getActivity().findViewById(R.id.et_password);
+        et_email = (EditText)getActivity().findViewById(R.id.et_email);
 
+        but_register = (Button)getActivity().findViewById(R.id.but_register);
     }
 
     @SmallTest
-    public void testInit() throws Exception {
+    public void testPreConditions() throws Exception {
         assertNotNull(et_username);
         assertNotNull(et_password);
+        assertNotNull(et_email);
         assertNotNull(but_register);
     }
 
     public void tearDown() throws Exception {
 
-    }
-
-    public void testOnCreate() throws Exception {
-        et_username.setText("wuwenhuang88@qq.com");
-        et_password.setText("jianyang8");
-
-        TouchUtils.clickView(this, but_register);
     }
 }
