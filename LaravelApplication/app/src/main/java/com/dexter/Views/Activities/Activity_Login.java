@@ -1,7 +1,9 @@
 package com.dexter.Views.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -73,6 +75,9 @@ public class Activity_Login extends BaseActivity{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                holder.et_email.setText("");
+                holder.et_password.setText("");
+
                 volleyCall(jsonObj);
 //                new Task_Login(getApplicationContext(), jsonObj).execute();
             }
@@ -96,6 +101,7 @@ public class Activity_Login extends BaseActivity{
                         Gson gson = new GsonBuilder().create();
                         String outputString = jsonObject.toString();
                         ResourceManager.UserProfile = gson.fromJson(outputString, Model_User.class);
+                        showProfileDialog();
                     }
                 },
                 new Response.ErrorListener(){
@@ -113,6 +119,23 @@ public class Activity_Login extends BaseActivity{
             }
         };
         Volley.newRequestQueue(getBaseContext()).add(jsonObjRequest);
+    }
+
+    private void showProfileDialog() {
+        String message = "Name : " + ResourceManager.UserProfile.name + "\n";
+        message += "Email : " + ResourceManager.UserProfile.email + "\n";
+        message += "Access Token : " + ResourceManager.UserProfile.remember_token + "\n";
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create();
+
+        dialog.show();
     }
 
     private Receiver_Login mBroadcastReceiverLogin = new Receiver_Login()
