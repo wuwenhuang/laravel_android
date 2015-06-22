@@ -40,7 +40,6 @@ public class Activity_RegisterTest extends ActivityInstrumentationTestCase2<Acti
         but_register = (Button)getActivity().findViewById(R.id.but_register);
     }
 
-    @SmallTest
     public void testPreConditions() throws Exception {
         assertNotNull(et_username);
         assertNotNull(et_password);
