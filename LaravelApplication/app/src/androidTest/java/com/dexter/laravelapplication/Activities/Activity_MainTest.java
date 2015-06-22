@@ -56,13 +56,13 @@ public class Activity_MainTest extends ActivityInstrumentationTestCase2<Activity
         Instrumentation.ActivityMonitor monitor = mInstrumentation.addMonitor(Activity_LoginTest.class.getName(), null, false);
         assertEquals(0, monitor.getHits());
         TouchUtils.clickView(this, but_login);
-        monitor.waitForActivityWithTimeout(5000);
+        monitor.waitForActivityWithTimeout(100);
         assertEquals(0, monitor.getHits());
 
         monitor = mInstrumentation.addMonitor(Activity_RegisterTest.class.getName(), null, false);
         assertEquals(0, monitor.getHits());
         TouchUtils.clickView(this, but_register);
-        monitor.waitForActivityWithTimeout(5000);
+        monitor.waitForActivityWithTimeout(100);
         assertEquals(0, monitor.getHits());
 
         mInstrumentation.removeMonitor(monitor);
