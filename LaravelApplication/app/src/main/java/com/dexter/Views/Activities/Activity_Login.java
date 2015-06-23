@@ -61,10 +61,10 @@ public class Activity_Login extends BaseActivity{
     protected void init() {
         holder = new Holder_Login();
 
-        holder.et_email = (EditText)findViewById(R.id.et_email);
-        holder.et_password = (EditText)findViewById(R.id.et_password);
+        holder.et_email = (EditText) findViewById(R.id.et_email);
+        holder.et_password = (EditText) findViewById(R.id.et_password);
 
-        holder.but_login = (Button)findViewById(R.id.but_login);
+        holder.but_login = (Button) findViewById(R.id.but_login);
         holder.but_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +72,7 @@ public class Activity_Login extends BaseActivity{
                 try {
                     jsonObj.put("email", holder.et_email.getText().toString());
                     jsonObj.put("password", holder.et_password.getText().toString());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -83,7 +84,7 @@ public class Activity_Login extends BaseActivity{
             }
         });
 
-        holder.but_forgetPassword = (Button)findViewById(R.id.but_forgetPassword);
+        holder.but_forgetPassword = (Button) findViewById(R.id.but_forgetPassword);
         holder.but_forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +93,7 @@ public class Activity_Login extends BaseActivity{
         });
     }
 
-    private void volleyCall(final JSONObject jsonObj) {
+    private void volleyCall(final JSONObject jsonObj){
         JsonObjectRequest jsonObjRequest = new JsonObjectRequest(
                 Request.Method.POST, "http://dexter-laravelframe.rhcloud.com/login", jsonObj,
                 new Response.Listener<JSONObject>(){
@@ -122,9 +123,7 @@ public class Activity_Login extends BaseActivity{
     }
 
     private void showProfileDialog() {
-        String message = "Name : " + ResourceManager.UserProfile.name + "\n";
-        message += "Email : " + ResourceManager.UserProfile.email + "\n";
-        message += "Access Token : " + ResourceManager.UserProfile.remember_token + "\n";
+        String message = new GsonBuilder().create().toJson(ResourceManager.UserProfile).replace(",", "\n");
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage(message)
@@ -143,10 +142,14 @@ public class Activity_Login extends BaseActivity{
         @Override
         public void onReceive(Context context, Intent intent) {
             Boolean isLogin = intent.getBooleanExtra(Constant_String.IS_LOGIN, false);
-
-
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Activity_Login.this.unregisterReceiver(mBroadcastReceiverLogin);
+    }
 }
 
 class Holder_Login
@@ -157,5 +160,3 @@ class Holder_Login
     Button but_login;
     Button but_forgetPassword;
 }
-
-

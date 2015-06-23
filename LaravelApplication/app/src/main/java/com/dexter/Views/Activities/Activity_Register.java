@@ -71,6 +71,12 @@ public class Activity_Register extends BaseActivity{
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Activity_Register.this.unregisterReceiver(mBroadcastRegister);
+    }
+
     private void createDialog()
     {
         dialog = new ProgressDialog(getBaseContext());
