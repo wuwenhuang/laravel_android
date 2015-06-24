@@ -1,6 +1,7 @@
 package com.dexter.laravelapplication.Tasks;
 
 import android.test.ActivityTestCase;
+import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 
 import junit.framework.TestCase;
@@ -20,7 +21,7 @@ import java.net.URL;
 /**
  * Created by dexter.n on 22/06/2015.
  */
-public class LoginTask extends ActivityTestCase {
+public class LoginTask extends AndroidTestCase {
     public static final JSONObject loginJsonObj = new JSONObject();
 
     static {
